@@ -9,11 +9,13 @@ import '../screens/wallet_screen.dart';
 class CustomBottomNavigationBar extends StatefulWidget {
   final int currentIndex;
   final Function(int) onTap;
+  final bool? isBarPushed;
 
   const CustomBottomNavigationBar({
     super.key,
     required this.currentIndex,
     required this.onTap,
+    this.isBarPushed,
   });
 
   @override
@@ -25,11 +27,10 @@ class _CustomBottomNavigationBarState extends State<CustomBottomNavigationBar> {
   int currentIndex = 0;
 
   void onTap(int index) {
-    // widget.onTap(index);
+    widget.onTap(index);
     setState(() {
       currentIndex = index;
     });
-    Navigator.pushNamed(context, ScreensURL[index]);
   }
 
   @override

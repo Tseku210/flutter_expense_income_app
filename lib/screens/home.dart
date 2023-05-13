@@ -23,29 +23,8 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: const HomeContent(),
-      floatingActionButton: currentIndex == 0
-          ? FloatingActionButton(
-              onPressed: () {
-                Navigator.pushNamed(context, "/expense");
-              },
-              backgroundColor: lightPrimaryColor,
-              child: const Icon(
-                Icons.add,
-                size: 40,
-              ),
-            )
-          : null,
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-      bottomNavigationBar: CustomBottomNavigationBar(
-        currentIndex: currentIndex,
-        onTap: (index) {
-          setState(() {
-            currentIndex = index;
-          });
-        },
-      ),
+    return const Scaffold(
+      body: HomeContent(),
     );
   }
 }

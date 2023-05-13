@@ -7,6 +7,8 @@ import 'package:green_ui/screens/profile_screen.dart';
 import 'package:green_ui/screens/splash_screen.dart';
 import 'package:green_ui/screens/wallet_screen.dart';
 
+import 'components/custom_navigation_bar.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -44,7 +46,8 @@ class MyApp extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const SplashScreen(),
-          '/home': (context) => const HomeScreen(),
+          '/home': (context) => const StartScreen(),
+          // энэ доошоо хэрэглэгдэхгүй байгаа
           '/graph': (context) => const HomeScreen(),
           '/expense': (context) => const AddExpenseScreen(),
           '/wallet': (context) => const WalletScreen(),
@@ -63,44 +66,24 @@ class StartScreen extends StatefulWidget {
 class _StartScreenState extends State<StartScreen> {
   int currentIndex = 0;
 
-  final List<Widget> _screens = const [
-    HomeScreen(),
-    GraphScreen(),
-    WalletScreen(),
-    ProfileScreen(),
-  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: _screens[currentIndex],
-      bottomNavigationBar: BottomNavigationBar(
-        selectedItemColor: lightPrimaryColor,
-        items: [
-          BottomNavigationBarItem(
-            icon: currentIndex == 0
-                ? const Icon(Icons.home_filled)
-                : const Icon(Icons.home_outlined),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: currentIndex == 1
-                ? const Icon(Icons.bar_chart)
-                : const Icon(Icons.bar_chart_outlined),
-            label: 'Chart',
-          ),
-          BottomNavigationBarItem(
-            icon: currentIndex == 2
-                ? const Icon(Icons.wallet)
-                : const Icon(Icons.wallet_outlined),
-            label: 'Wallet',
-          ),
-          BottomNavigationBarItem(
-            icon: currentIndex == 3
-                ? const Icon(Icons.abc)
-                : const Icon(Icons.abc_outlined),
-            label: 'Profile',
-          ),
-        ],
+      body: Screens[currentIndex],
+      floatingActionButton: currentIndex == 0
+          ? FloatingActionButton(
+              onPressed: () {
+                Navigator.pushNamed(context, "/expense");
+              },
+              backgroundColor: lightPrimaryColor,
+              child: const Icon(
+                Icons.add,
+                size: 40,
+              ),
+            )
+          : null,
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      bottomNavigationBar: CustomBottomNavigationBar(
         currentIndex: currentIndex,
         onTap: (index) {
           setState(() {
