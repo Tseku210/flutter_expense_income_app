@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_ui/constants/constants.dart';
 import 'package:green_ui/screens/add_expense_screen.dart';
+import 'package:green_ui/screens/connect_wallet_screen.dart';
 import 'package:green_ui/screens/graph_screen.dart';
 import 'package:green_ui/screens/home.dart';
 import 'package:green_ui/screens/profile_screen.dart';
@@ -47,10 +48,11 @@ class MyApp extends StatelessWidget {
         routes: {
           '/': (context) => const SplashScreen(),
           '/home': (context) => const StartScreen(),
+          '/connect_wallet': (context) => const ConnectWalletScreen(),
+          '/expense': (context) => const AddExpenseScreen(),
           // энэ доошоо хэрэглэгдэхгүй байгаа
           '/graph': (context) => const HomeScreen(),
-          '/expense': (context) => const AddExpenseScreen(),
-          '/wallet': (context) => const WalletScreen(),
+          '/wallet': (context) => Screens[2],
           '/profile': (context) => const HomeScreen(),
         });
   }

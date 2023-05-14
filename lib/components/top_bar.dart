@@ -80,6 +80,13 @@ class TopBar extends StatelessWidget {
                                     fontSize: 20,
                                     fontWeight: FontWeight.w600))
                           ])
+                    : const SizedBox(width: 40),
+                title != null
+                    ? Text(title!,
+                        style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 20,
+                            fontWeight: FontWeight.w600))
                     : const SizedBox(),
                 isNotification
                     ? Container(

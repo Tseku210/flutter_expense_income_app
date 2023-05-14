@@ -76,7 +76,7 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
           child: Stack(
             children: <Widget>[
               // top bar
-              TopBar(size: size, name: "Tseku"),
+              TopBar(size: size),
               // card
               Positioned(
                 bottom: 80,
