@@ -50,7 +50,7 @@ class _ConnectWalletScreenState extends State<ConnectWalletScreen> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 40.0),
                 child: Column(
-                  children: [
+                  children: const [
                     CustomTabBar2(
                       text1: "Cards",
                       text2: "Accounts",
@@ -266,7 +266,9 @@ class _AccountsState extends State<Accounts> {
           SizedBox(
             width: 400,
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: () {
+                Navigator.pushNamed(context, '/bill_details');
+              },
               style: TextButton.styleFrom(
                 padding: const EdgeInsets.symmetric(
                   horizontal: 40,
