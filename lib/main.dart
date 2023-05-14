@@ -52,7 +52,7 @@ class MyApp extends StatelessWidget {
           '/expense': (context) => const AddExpenseScreen(),
           // энэ доошоо хэрэглэгдэхгүй байгаа
           '/graph': (context) => const HomeScreen(),
-          '/wallet': (context) => Screens[2],
+          '/wallet': (context) => const WalletScreen(),
           '/profile': (context) => const HomeScreen(),
         });
   }

@@ -174,10 +174,11 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                     ),
                                   ),
                                   focusedBorder: const OutlineInputBorder(
-                                      borderSide: BorderSide(
-                                    color: lightPrimaryColor,
-                                    width: 2,
-                                  )),
+                                    borderSide: BorderSide(
+                                      color: lightPrimaryColor,
+                                      width: 2,
+                                    ),
+                                  ),
                                   hintText: 'Enter amount',
                                   prefixIconColor: lightPrimaryColor,
                                   prefixIcon: const Icon(Icons.attach_money),

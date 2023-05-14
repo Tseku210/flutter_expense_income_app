@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:green_ui/components/bill_item.dart';
 import 'package:green_ui/components/top_bar.dart';
 import 'package:green_ui/constants/constants.dart';
+import 'package:green_ui/screens/connect_wallet_screen.dart';
 
+import '../components/custom_tab_bar.dart';
 import '../components/transaction_item.dart';
 
 class WalletScreen extends StatefulWidget {
@@ -71,37 +73,28 @@ class _WalletContentState extends State<WalletContent> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       // crossAxisAlignment: CrossAxisAlignment.,
-                      children: [
-                        const Text(
+                      children: const [
+                        Text(
                           "Total Balance",
                           style: TextStyle(fontSize: 16, color: grayTextColor),
                         ),
-                        const SizedBox(height: 10),
-                        const Text(
+                        SizedBox(height: 10),
+                        Text(
                           "\$2,548.00",
                           style: TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
-                        const SizedBox(height: 30),
-                        const ThreeButtons(),
-                        const SizedBox(height: 50),
-                        // DefaultTabController(
-                        //   length: 2,
-                        //   child: Column(
-                        //     children: const [
-                        //       CustomTabBar(),
-                        //       Expanded(
-                        //         child: TabBarView(
-                        //           children: [
-                        //             Transactions(),
-                        //             UpcomingBills(),
-                        //           ],
-                        //         ),
-                        //       ),
-                        //     ],
-                        //   ),
-                        // ),
-                        CustomTabBar2(),
+                        SizedBox(height: 30),
+                        ThreeButtons(),
+                        SizedBox(height: 50),
+                        CustomTabBar2(
+                          text1: "Transactions",
+                          text2: "Upcoming Bills",
+                          widget1: Transactions(),
+                          widget2: UpcomingBills(),
+                          height: 280,
+                          width: 400,
+                        ),
                       ],
                     ),
                   ),
@@ -133,7 +126,10 @@ class ThreeButtons extends StatelessWidget {
                   border: Border.all(color: lightPrimaryColor, width: 2)),
               child: IconButton(
                 onPressed: () {
-                  Navigator.pushNamed(context, '/connect_wallet');
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const ConnectWalletScreen()));
                 },
                 icon: const Icon(
                   Icons.add,
@@ -194,34 +190,6 @@ class ThreeButtons extends StatelessWidget {
     );
   }
 }
-
-// class CustomTabBar extends StatelessWidget {
-//   const CustomTabBar({super.key});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       height: 50,
-//       decoration: BoxDecoration(
-//         borderRadius: BorderRadius.circular(20),
-//       ),
-//       child: TabBar(
-//         indicator: BoxDecoration(
-//           color: Colors.green,
-//           borderRadius: BorderRadius.circular(20),
-//         ),
-//         labelColor: Colors.white,
-//         dividerColor: Colors.black,
-//         tabs: const [
-//           Tab(
-//             text: "Transactions",
-//           ),
-//           Tab(text: "Upcoming Bills")
-//         ],
-//       ),
-//     );
-//   }
-// }
 
 class Transactions extends StatelessWidget {
   const Transactions({super.key});
@@ -304,74 +272,5 @@ class UpcomingBills extends StatelessWidget {
       ),
     );
     ;
-  }
-}
-
-class CustomTabBar2 extends StatefulWidget {
-  const CustomTabBar2({super.key});
-
-  @override
-  State<CustomTabBar2> createState() => _CustomTabBar2State();
-}
-
-class _CustomTabBar2State extends State<CustomTabBar2>
-    with SingleTickerProviderStateMixin {
-  late TabController _tabController;
-  @override
-  void initState() {
-    _tabController = TabController(length: 2, vsync: this);
-    super.initState();
-  }
-
-  @override
-  void dispose() {
-    _tabController.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 400,
-      height: 400,
-      child: Column(
-        children: [
-          Container(
-            width: 400,
-            decoration: BoxDecoration(
-              borderRadius: BorderRadius.circular(40),
-              color: Colors.grey[200],
-            ),
-            child: TabBar(
-              controller: _tabController,
-              indicator: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(40),
-              ),
-              labelColor: Colors.black,
-              padding: const EdgeInsets.all(5),
-              tabs: const [
-                Tab(
-                  text: "Transactions",
-                ),
-                Tab(text: "Upcoming Bills"),
-              ],
-            ),
-          ),
-          SizedBox(
-            height: 280,
-            width: 400,
-            // color: Colors.white,
-            child: TabBarView(
-              controller: _tabController,
-              children: const [
-                Transactions(),
-                UpcomingBills(),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
   }
 }

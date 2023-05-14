@@ -1,6 +1,7 @@
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
 import 'package:flutter_credit_card/flutter_credit_card.dart';
+import 'package:green_ui/constants/constants.dart';
 
 class CreditCard extends StatefulWidget {
   final String cardNumber;
@@ -29,6 +30,8 @@ class _CreditCardState extends State<CreditCard> {
       cardHolderName: widget.cardHolderName,
       cvvCode: widget.cvvCode,
       showBackView: widget.isCvvFocused,
+      cardBgColor: lightPrimaryColor,
+      isHolderNameVisible: true,
       onCreditCardWidgetChange: (brand) {},
     );
   }
