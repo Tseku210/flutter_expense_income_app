@@ -143,6 +143,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 5),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -162,6 +163,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 5),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -181,6 +183,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 5),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -225,6 +228,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                     ),
                                   ],
                                 ),
+                                const SizedBox(height: 5),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
@@ -275,13 +279,12 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 200),
+                          const SizedBox(height: 50),
                           SizedBox(
                             width: 400,
-                            child: FilledButton(
+                            child: OutlinedButton(
                               onPressed: () {
-                                Navigator.pushNamed(
-                                    context, '/payment_success');
+                                Navigator.pushNamed(context, '/home');
                               },
                               style: TextButton.styleFrom(
                                 padding: const EdgeInsets.symmetric(
@@ -296,9 +299,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                 ),
                               ),
                               child: const Text(
-                                'Confirm and Pay',
+                                'Share Receipt',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: primaryColor,
                                   fontSize: 18,
                                 ),
                               ),
