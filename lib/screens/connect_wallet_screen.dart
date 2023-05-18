@@ -7,6 +7,7 @@ import 'package:green_ui/components/custom_tab_bar.dart';
 import 'package:green_ui/constants/constants.dart';
 
 import '../components/top_bar.dart';
+import '../entities/transaction.dart';
 
 class ConnectWalletScreen extends StatefulWidget {
   const ConnectWalletScreen({super.key});

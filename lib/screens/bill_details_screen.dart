@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:green_ui/entities/transaction.dart';
+import 'package:provider/provider.dart';
 
 import '../components/top_bar.dart';
 import '../constants/constants.dart';
+import '../providers/transaction_provider.dart';
 
 class BillDetailsScreen extends StatefulWidget {
   const BillDetailsScreen({super.key});
@@ -73,6 +76,9 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var transactionProvider = Provider.of<TransactionProvider>(context);
+    Transaction transaction = transactionProvider.selectedBillItem;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -120,7 +126,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                                     shape: BoxShape.circle,
                                   ),
                                   child: Image.asset(
-                                    'assets/images/youtube.png',
+                                    transaction.image,
                                     width: 40,
                                     height: 40,
                                   ),
@@ -128,17 +134,17 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                                 const SizedBox(width: 10),
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: const [
+                                  children: [
                                     Text(
-                                      'Youtube Premium',
-                                      style: TextStyle(
+                                      transaction.title,
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold),
                                     ),
-                                    SizedBox(height: 5),
+                                    const SizedBox(height: 5),
                                     Text(
-                                      'Feb 28, 2022',
-                                      style: TextStyle(fontSize: 14),
+                                      '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
+                                      style: const TextStyle(fontSize: 14),
                                     ),
                                   ],
                                 ),
@@ -153,8 +159,8 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Price',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -162,8 +168,8 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '\$ 11.99',
-                                      style: TextStyle(
+                                      '\$${transaction.amount.toStringAsFixed(2)}',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
@@ -198,8 +204,8 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Total',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -208,8 +214,8 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '\$ 13.98',
-                                      style: TextStyle(
+                                      '\$ ${(transaction.amount + 1.99).toStringAsFixed(2)}',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),

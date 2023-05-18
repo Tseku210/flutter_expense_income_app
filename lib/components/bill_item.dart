@@ -1,25 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:green_ui/entities/transaction.dart';
+import 'package:green_ui/screens/connect_wallet_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../constants/constants.dart';
+import '../providers/transaction_provider.dart';
+import '../screens/payment_screen.dart';
 
-class BillItem extends StatelessWidget {
-  final String image;
-  final String title;
-  final String day;
-  final bool income;
-  final double amount;
+class BillItem extends StatefulWidget {
+  final Transaction transaction;
 
   const BillItem({
     super.key,
-    required this.image,
-    required this.title,
-    required this.day,
-    required this.income,
-    required this.amount,
+    required this.transaction,
   });
 
   @override
+  State<BillItem> createState() => _BillItemState();
+}
+
+class _BillItemState extends State<BillItem> {
+  @override
   Widget build(BuildContext context) {
+    TransactionProvider transactionProvider =
+        Provider.of<TransactionProvider>(context);
     return Container(
       height: 70,
       padding: const EdgeInsets.symmetric(vertical: 10),
@@ -34,29 +38,33 @@ class BillItem extends StatelessWidget {
                       color: const Color(0xFFF0F6F5),
                       borderRadius: BorderRadius.circular(10),
                     ),
-                    child: Image(image: AssetImage(image))),
+                    child: Image(image: AssetImage(widget.transaction.image))),
                 const SizedBox(width: 10),
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: <Widget>[
-                    Text(title,
+                    Text(widget.transaction.title,
                         style: const TextStyle(
                             fontSize: 16, fontWeight: FontWeight.w500)),
                     const SizedBox(height: 5),
-                    Text(day, style: const TextStyle(fontSize: 13))
+                    Text(
+                        '${widget.transaction.date.day}/${widget.transaction.date.month}/${widget.transaction.date.year}',
+                        style: const TextStyle(fontSize: 13))
                   ],
                 ),
               ],
             ),
-            TextButton(
-              onPressed: null,
-              style: TextButton.styleFrom(
-                backgroundColor: Colors.green[50],
-                padding: const EdgeInsets.symmetric(horizontal: 30),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
+            FilledButton(
+              onPressed: () {
+                transactionProvider.selectBill(widget.transaction.id);
+                Navigator.pushNamed(context, '/connect_wallet');
+              },
+              style: FilledButton.styleFrom(
+                  padding: const EdgeInsets.symmetric(horizontal: 30),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(20),
+                  ),
+                  backgroundColor: lightPrimaryColor.withOpacity(0.1)),
               child: const Text(
                 "Pay",
                 style: TextStyle(color: primaryColor, fontSize: 16),

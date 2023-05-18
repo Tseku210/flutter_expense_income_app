@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 
 import '../components/top_bar.dart';
 import '../constants/constants.dart';
+import '../entities/transaction.dart';
+import '../providers/transaction_provider.dart';
 
 class PaymentScreen extends StatefulWidget {
   const PaymentScreen({super.key});
@@ -16,6 +19,9 @@ class _PaymentScreenState extends State<PaymentScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var transactionProvider = Provider.of<TransactionProvider>(context);
+    Transaction transaction = transactionProvider.selectedBillItem;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -61,19 +67,19 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 shape: BoxShape.circle,
                               ),
                               child: Image.asset(
-                                'assets/images/youtube.png',
+                                transaction.image,
                                 width: 40,
                                 height: 40,
                               ),
                             ),
                           ),
                           const SizedBox(height: 20),
-                          const SizedBox(
+                          SizedBox(
                             width: 300,
                             child: Text(
-                              'You will pay Youtube Premium for one month with BCA OneKlik',
+                              'You will pay ${transaction.title} Premium for one month with BCA OneKlik',
                               textAlign: TextAlign.center,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 20,
                               ),
                             ),
@@ -86,8 +92,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Price',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -95,8 +101,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '\$ 11.99',
-                                      style: TextStyle(
+                                      '\$${transaction.amount.toStringAsFixed(2)}',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
@@ -131,8 +137,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Total',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -141,8 +147,8 @@ class _PaymentScreenState extends State<PaymentScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '\$ 13.98',
-                                      style: TextStyle(
+                                      '\$${(transaction.amount + 1.99).toStringAsFixed(2)}',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),

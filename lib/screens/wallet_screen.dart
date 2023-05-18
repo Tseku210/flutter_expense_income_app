@@ -137,10 +137,10 @@ class ThreeButtons extends StatelessWidget {
                   border: Border.all(color: lightPrimaryColor, width: 2)),
               child: IconButton(
                 onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const ConnectWalletScreen()));
+                  // Navigator.push(
+                  //     context,
+                  //     MaterialPageRoute(
+                  //         builder: (context) => const ConnectWalletScreen()));
                 },
                 icon: const Icon(
                   Icons.add,
@@ -203,8 +203,8 @@ class ThreeButtons extends StatelessWidget {
 }
 
 class Transactions extends StatelessWidget {
-  TransactionProvider transactionProvider;
-  Transactions({super.key, required this.transactionProvider});
+  final TransactionProvider transactionProvider;
+  const Transactions({super.key, required this.transactionProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -228,8 +228,8 @@ class Transactions extends StatelessWidget {
 }
 
 class UpcomingBills extends StatelessWidget {
-  TransactionProvider transactionProvider;
-  UpcomingBills({super.key, required this.transactionProvider});
+  final TransactionProvider transactionProvider;
+  const UpcomingBills({super.key, required this.transactionProvider});
 
   @override
   Widget build(BuildContext context) {
@@ -239,12 +239,7 @@ class UpcomingBills extends StatelessWidget {
       itemBuilder: (context, index) {
         Transaction transaction = transactionProvider.bills[index];
         return BillItem(
-          image: transaction.image,
-          title: transaction.title,
-          day:
-              '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
-          income: transaction.income,
-          amount: transaction.amount,
+          transaction: transaction,
         );
       },
     );

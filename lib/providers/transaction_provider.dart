@@ -12,6 +12,8 @@ class TransactionProvider with ChangeNotifier {
   double expense = 0;
   double income = 0;
 
+  Transaction? selectedTransaction;
+
   List<Transaction> _transactions = [];
   List<Transaction> _bills = [];
 
@@ -27,6 +29,10 @@ class TransactionProvider with ChangeNotifier {
     return balance;
   }
 
+  Transaction get selectedBillItem {
+    return selectedTransaction!;
+  }
+
   double get totalExpense {
     return expense;
   }
@@ -34,6 +40,13 @@ class TransactionProvider with ChangeNotifier {
   double get totalIncome {
     return income;
   }
+
+  void selectBill(String id) {
+    selectedTransaction = _bills.firstWhere((bill) => bill.id == id);
+    notifyListeners();
+  }
+
+  void clearBill() {}
 
   double calculateTotalBalance() {
     double total = 0;

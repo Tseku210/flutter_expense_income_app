@@ -1,9 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter/src/widgets/placeholder.dart';
+import 'package:provider/provider.dart';
 
 import '../components/top_bar.dart';
 import '../constants/constants.dart';
+import '../entities/transaction.dart';
+import '../providers/transaction_provider.dart';
+import 'package:intl/intl.dart';
 
 class PaymentSuccessScreen extends StatefulWidget {
   const PaymentSuccessScreen({super.key});
@@ -16,6 +22,10 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+
+    var transactionProvider = Provider.of<TransactionProvider>(context);
+    Transaction transaction = transactionProvider.selectedBillItem;
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       appBar: AppBar(
@@ -68,8 +78,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                           SizedBox(
                             width: 300,
                             child: Column(
-                              children: const [
-                                Text(
+                              children: [
+                                const Text(
                                   'Payment Successful',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
@@ -79,9 +89,9 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                   ),
                                 ),
                                 Text(
-                                  'Youtube Premium',
+                                  transaction.title,
                                   textAlign: TextAlign.center,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16,
                                     color: grayTextColor,
                                   ),
@@ -147,8 +157,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Time',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -156,8 +166,10 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '08:16 AM',
-                                      style: TextStyle(
+                                      DateFormat('hh:mm a')
+                                          .format(DateTime.now())
+                                          .toString(),
+                                      style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
@@ -167,8 +179,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Date',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -176,8 +188,10 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                       ),
                                     ),
                                     Text(
-                                      'Feb 28, 2022',
-                                      style: TextStyle(
+                                      DateFormat('MMM d, yyyy')
+                                          .format(DateTime.now())
+                                          .toString(),
+                                      style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
@@ -196,7 +210,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '23456789',
+                                      '1234567890',
                                       style: TextStyle(
                                         fontSize: 16,
                                       ),
@@ -212,8 +226,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Price',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -221,8 +235,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '\$ 11.99',
-                                      style: TextStyle(
+                                      '\$${transaction.amount.toStringAsFixed(2)}',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
@@ -258,8 +272,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
-                                    Text(
+                                  children: [
+                                    const Text(
                                       'Total',
                                       style: TextStyle(
                                         fontSize: 16,
@@ -268,8 +282,8 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                                       ),
                                     ),
                                     Text(
-                                      '\$ 13.98',
-                                      style: TextStyle(
+                                      '\$${(transaction.amount + 1.99).toStringAsFixed(2)}',
+                                      style: const TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -284,6 +298,7 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                             width: 400,
                             child: OutlinedButton(
                               onPressed: () {
+                                // transactionProvider.clearBill();
                                 Navigator.pushNamed(context, '/home');
                               },
                               style: TextButton.styleFrom(
