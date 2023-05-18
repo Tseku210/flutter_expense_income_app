@@ -6,7 +6,10 @@ import 'package:green_ui/components/transaction_item.dart';
 import 'package:green_ui/constants/constants.dart';
 import 'package:green_ui/screens/profile_screen.dart';
 import 'package:green_ui/screens/wallet_screen.dart';
+import 'package:provider/provider.dart';
 
+import '../entities/transaction.dart';
+import '../providers/transaction_provider.dart';
 import 'graph_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -20,6 +23,23 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   int currentIndex = 0;
+
+  bool isLoading = false;
+
+  // @override
+  // void didChangeDependencies() {
+  //   super.didChangeDependencies();
+  //   Provider.of<TransactionProvider>(context, listen: false)
+  //       .fetchTransactions();
+  // }
+
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   print("hello");
+  //   Provider.of<TransactionProvider>(context, listen: false)
+  //       .fetchTransactions();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -35,6 +55,11 @@ class HomeContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    var transactionProvider = Provider.of<TransactionProvider>(context);
+
+    //fetching transactions
+    transactionProvider.fetchTransactions();
+
     return Center(
       child: Column(
         children: <Widget>[
@@ -105,10 +130,10 @@ class HomeContent extends StatelessWidget {
                                 ],
                               ),
                               const SizedBox(height: 10),
-                              const Text(
-                                '\$5,000.00',
+                              Text(
+                                '\$${transactionProvider.balance.toStringAsFixed(2)}',
                                 // textAlign: TextAlign.start,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 30,
                                   fontWeight: FontWeight.bold,
@@ -151,9 +176,9 @@ class HomeContent extends StatelessWidget {
                                           ],
                                         ),
                                         const SizedBox(height: 5),
-                                        const Text(
-                                          '\$2,000.00',
-                                          style: TextStyle(
+                                        Text(
+                                          '\$${transactionProvider.income.toStringAsFixed(2)}',
+                                          style: const TextStyle(
                                               color: Colors.white,
                                               fontSize: 20,
                                               fontWeight: FontWeight.w600),
@@ -193,10 +218,10 @@ class HomeContent extends StatelessWidget {
                                           ],
                                         ),
                                         const SizedBox(height: 5),
-                                        const Text(
-                                          '\$1,000.00',
+                                        Text(
+                                          '\$${transactionProvider.expense.toStringAsFixed(2)}',
                                           // textAlign: TextAlign.end,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                             color: Colors.white,
                                             fontSize: 20,
                                             fontWeight: FontWeight.w600,
@@ -218,8 +243,7 @@ class HomeContent extends StatelessWidget {
             ),
           ),
           Expanded(
-            child: SingleChildScrollView(
-                child: Column(
+            child: Column(
               children: [
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 20),
@@ -236,36 +260,96 @@ class HomeContent extends StatelessWidget {
                                 fontSize: 14,
                               ))
                         ]),
-                    const TransactionItem(
-                        image: "assets/images/up.png",
-                        title: "Upwork",
-                        day: "Today",
-                        income: true,
-                        amount: 850.00),
-                    const TransactionItem(
-                        image: "assets/images/person.png",
-                        title: "Transfer",
-                        day: "Yesterday",
-                        income: false,
-                        amount: 85.00),
-                    const TransactionItem(
-                        image: "assets/images/paypall.png",
-                        title: "Paypall",
-                        day: "Jan 30, 2022",
-                        income: true,
-                        amount: 1406.00),
-                    const TransactionItem(
-                        image: "assets/images/youtube.png",
-                        title: "Youtube",
-                        day: "Jan 16, 2022",
-                        income: false,
-                        amount: 11.99),
-                    const TransactionItem(
-                        image: "assets/images/youtube.png",
-                        title: "Youtube",
-                        day: "Jan 16, 2022",
-                        income: false,
-                        amount: 11.99),
+                    SizedBox(
+                      height: size.height * 0.25,
+                      child: ListView.builder(
+                        padding: const EdgeInsets.all(0),
+                        physics: const ScrollPhysics(),
+                        itemCount: transactionProvider.transactions.length,
+                        itemBuilder: (context, index) {
+                          final transaction =
+                              transactionProvider.transactions[index];
+                          return TransactionItem(
+                            image: transaction.image,
+                            title: transaction.title,
+                            day:
+                                "${transaction.date.day}/${transaction.date.month}/${transaction.date.year}",
+                            income: transaction.income,
+                            amount: transaction.amount,
+                          );
+                        },
+                      ),
+                    )
+                    // FutureBuilder<void>(
+                    //   future: transactionProvider.fetchTransactions(),
+                    //   builder: (context, snapshot) {
+                    //     if (snapshot.connectionState ==
+                    //         ConnectionState.waiting) {
+                    //       return Center(
+                    //         child: CircularProgressIndicator(),
+                    //       );
+                    //     } else if (snapshot.hasError) {
+                    //       return Center(
+                    //         child: Text('Error occurred: ${snapshot.error}'),
+                    //       );
+                    //     } else {
+                    //       final transactions = transactionProvider.transactions;
+                    //       if (transactions.isEmpty) {
+                    //         return Center(
+                    //           child: Text('No transactions available.'),
+                    //         );
+                    //       } else {
+                    //         return ListView.builder(
+                    //           shrinkWrap: true,
+                    //           physics: const NeverScrollableScrollPhysics(),
+                    //           itemCount: transactions.length,
+                    //           itemBuilder: (context, index) {
+                    //             var transaction = transactions[index];
+                    //             return TransactionItem(
+                    //               image: transaction.image,
+                    //               title: transaction.title,
+                    //               day:
+                    //                   "${transaction.date.day}/${transaction.date.month}/${transaction.date.year}",
+                    //               income: transaction.income,
+                    //               amount: transaction.amount,
+                    //             );
+                    //           },
+                    //         );
+                    //       }
+                    //     }
+                    //   },
+                    // )
+
+                    // const TransactionItem(
+                    //     image: "assets/images/up.png",
+                    //     title: "Upwork",
+                    //     day: "Today",
+                    //     income: true,
+                    //     amount: 850.00),
+                    // const TransactionItem(
+                    //     image: "assets/images/person.png",
+                    //     title: "Transfer",
+                    //     day: "Yesterday",
+                    //     income: false,
+                    //     amount: 85.00),
+                    // const TransactionItem(
+                    //     image: "assets/images/paypall.png",
+                    //     title: "Paypall",
+                    //     day: "Jan 30, 2022",
+                    //     income: true,
+                    //     amount: 1406.00),
+                    // const TransactionItem(
+                    //     image: "assets/images/youtube.png",
+                    //     title: "Youtube",
+                    //     day: "Jan 16, 2022",
+                    //     income: false,
+                    //     amount: 11.99),
+                    // const TransactionItem(
+                    //     image: "assets/images/youtube.png",
+                    //     title: "Youtube",
+                    //     day: "Jan 16, 2022",
+                    //     income: false,
+                    //     amount: 11.99),
                   ]),
                 ),
                 Padding(
@@ -317,7 +401,7 @@ class HomeContent extends StatelessWidget {
                       ],
                     )),
               ],
-            )),
+            ),
           )
         ],
       ),

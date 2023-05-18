@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:green_ui/constants/constants.dart';
+import 'package:green_ui/providers/transaction_provider.dart';
 import 'package:green_ui/screens/add_expense_screen.dart';
 import 'package:green_ui/screens/bill_details_screen.dart';
 import 'package:green_ui/screens/connect_wallet_screen.dart';
@@ -10,11 +11,17 @@ import 'package:green_ui/screens/payment_success_screen.dart';
 import 'package:green_ui/screens/profile_screen.dart';
 import 'package:green_ui/screens/splash_screen.dart';
 import 'package:green_ui/screens/wallet_screen.dart';
+import 'package:provider/provider.dart';
 
 import 'components/custom_navigation_bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (context) => TransactionProvider(),
+      child: const MyApp(),
+    ),
+  );
 }
 
 class CustomColors {
@@ -43,24 +50,25 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          primarySwatch: CustomColors.primaryColor,
-        ),
-        initialRoute: '/',
-        routes: {
-          '/': (context) => const SplashScreen(),
-          '/home': (context) => const StartScreen(),
-          '/connect_wallet': (context) => const ConnectWalletScreen(),
-          '/expense': (context) => const AddExpenseScreen(),
-          '/bill_details': (context) => const BillDetailsScreen(),
-          '/payment': (context) => const PaymentScreen(),
-          '/payment_success': (context) => const PaymentSuccessScreen(),
-          // энэ доошоо хэрэглэгдэхгүй байгаа
-          '/graph': (context) => const HomeScreen(),
-          '/wallet': (context) => const WalletScreen(),
-          '/profile': (context) => const HomeScreen(),
-        });
+      title: 'Flutter Demo',
+      theme: ThemeData(
+        primarySwatch: CustomColors.primaryColor,
+      ),
+      initialRoute: '/',
+      routes: {
+        '/': (context) => const SplashScreen(),
+        '/home': (context) => const StartScreen(),
+        '/connect_wallet': (context) => const ConnectWalletScreen(),
+        '/expense': (context) => const AddExpenseScreen(),
+        '/bill_details': (context) => const BillDetailsScreen(),
+        '/payment': (context) => const PaymentScreen(),
+        '/payment_success': (context) => const PaymentSuccessScreen(),
+        // энэ доошоо хэрэглэгдэхгүй байгаа
+        '/graph': (context) => const HomeScreen(),
+        '/wallet': (context) => const WalletScreen(),
+        '/profile': (context) => const HomeScreen(),
+      },
+    );
   }
 }
 

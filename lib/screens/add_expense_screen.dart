@@ -4,6 +4,10 @@ import 'package:green_ui/components/custom_navigation_bar.dart';
 import 'package:green_ui/components/top_bar.dart';
 import 'package:green_ui/constants/constants.dart';
 import 'package:dotted_border/dotted_border.dart';
+import 'package:provider/provider.dart';
+
+import '../entities/transaction.dart';
+import '../providers/transaction_provider.dart';
 
 class AddExpenseScreen extends StatefulWidget {
   static const String routeName = '/expense';
@@ -17,8 +21,9 @@ class AddExpenseScreen extends StatefulWidget {
 class _AddExpenseScreenState extends State<AddExpenseScreen> {
   String? _selectedItem;
   double amount = 0;
-  TextEditingController controller = TextEditingController();
   DateTime? _selectedDate;
+  bool income = false;
+  TextEditingController controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -241,6 +246,23 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                               ),
                             ),
                             const SizedBox(height: 20),
+                            // switch toggle
+                            const Text(
+                              "EXPENSE / INCOME",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: grayTextColor,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Switch(
+                                value: income,
+                                onChanged: (val) {
+                                  setState(() {
+                                    income = val;
+                                  });
+                                }),
+                            const SizedBox(height: 20),
                             const Text(
                               "INVOICE",
                               style: TextStyle(
@@ -263,7 +285,26 @@ class _AddExpenseScreenState extends State<AddExpenseScreen> {
                                   alignment: Alignment.center,
                                   width: 400,
                                   child: TextButton.icon(
-                                    onPressed: () {},
+                                    onPressed: () {
+                                      if (_selectedItem != null &&
+                                          amount != 0 &&
+                                          _selectedDate != null) {
+                                        Provider.of<TransactionProvider>(
+                                                context,
+                                                listen: false)
+                                            .addTransaction(
+                                          Transaction(
+                                            id: DateTime.now().toString(),
+                                            title: _selectedItem!,
+                                            image: logoPaths[_selectedItem!]!,
+                                            income: income,
+                                            amount: amount,
+                                            date: _selectedDate!,
+                                          ),
+                                        );
+                                        Navigator.pop(context);
+                                      }
+                                    },
                                     style: TextButton.styleFrom(
                                       padding: const EdgeInsets.symmetric(
                                           horizontal: 80),

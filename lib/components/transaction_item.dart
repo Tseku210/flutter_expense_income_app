@@ -8,17 +8,19 @@ class TransactionItem extends StatelessWidget {
   final String day;
   final bool income;
   final double amount;
-  const TransactionItem(
-      {super.key,
-      required this.image,
-      required this.title,
-      required this.day,
-      required this.income,
-      required this.amount});
+  const TransactionItem({
+    super.key,
+    required this.image,
+    required this.title,
+    required this.day,
+    required this.income,
+    required this.amount,
+  });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 70,
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,

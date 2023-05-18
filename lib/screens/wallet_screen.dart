@@ -3,9 +3,12 @@ import 'package:green_ui/components/bill_item.dart';
 import 'package:green_ui/components/top_bar.dart';
 import 'package:green_ui/constants/constants.dart';
 import 'package:green_ui/screens/connect_wallet_screen.dart';
+import 'package:provider/provider.dart';
 
 import '../components/custom_tab_bar.dart';
 import '../components/transaction_item.dart';
+import '../entities/transaction.dart';
+import '../providers/transaction_provider.dart';
 
 class WalletScreen extends StatefulWidget {
   static const routeName = '/wallet';
@@ -52,6 +55,11 @@ class _WalletContentState extends State<WalletContent> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    TransactionProvider transactionProvider =
+        Provider.of<TransactionProvider>(context);
+
+    transactionProvider.fetchTransactions();
+
     return Column(children: [
       SizedBox(
           height: size.height * 0.9,
@@ -73,25 +81,28 @@ class _WalletContentState extends State<WalletContent> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.start,
                       // crossAxisAlignment: CrossAxisAlignment.,
-                      children: const [
-                        Text(
+                      children: [
+                        const Text(
                           "Total Balance",
                           style: TextStyle(fontSize: 16, color: grayTextColor),
                         ),
-                        SizedBox(height: 10),
+                        const SizedBox(height: 10),
                         Text(
-                          "\$2,548.00",
-                          style: TextStyle(
+                          "\$${transactionProvider.balance.toStringAsFixed(2)}",
+                          style: const TextStyle(
                               fontSize: 30, fontWeight: FontWeight.bold),
                         ),
-                        SizedBox(height: 30),
-                        ThreeButtons(),
-                        SizedBox(height: 50),
+                        const SizedBox(height: 30),
+                        const ThreeButtons(),
+                        const SizedBox(height: 50),
                         CustomTabBar2(
                           text1: "Transactions",
                           text2: "Upcoming Bills",
-                          widget1: Transactions(),
-                          widget2: UpcomingBills(),
+                          widget1: Transactions(
+                              transactionProvider: transactionProvider),
+                          widget2: UpcomingBills(
+                            transactionProvider: transactionProvider,
+                          ),
                           height: 280,
                           width: 400,
                         ),
@@ -192,85 +203,50 @@ class ThreeButtons extends StatelessWidget {
 }
 
 class Transactions extends StatelessWidget {
-  const Transactions({super.key});
+  TransactionProvider transactionProvider;
+  Transactions({super.key, required this.transactionProvider});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          TransactionItem(
-              image: "assets/images/up.png",
-              title: "Upwork",
-              day: "Today",
-              income: true,
-              amount: 850.00),
-          TransactionItem(
-              image: "assets/images/person.png",
-              title: "Transfer",
-              day: "Yesterday",
-              income: false,
-              amount: 85.00),
-          TransactionItem(
-              image: "assets/images/paypall.png",
-              title: "Paypall",
-              day: "Jan 30, 2022",
-              income: true,
-              amount: 1406.00),
-          TransactionItem(
-              image: "assets/images/youtube.png",
-              title: "Youtube",
-              day: "Jan 16, 2022",
-              income: false,
-              amount: 11.99),
-          TransactionItem(
-              image: "assets/images/youtube.png",
-              title: "Youtube",
-              day: "Jan 16, 2022",
-              income: false,
-              amount: 11.99),
-        ],
-      ),
+    return ListView.builder(
+      padding: const EdgeInsets.all(0),
+      physics: const ScrollPhysics(),
+      itemCount: transactionProvider.transactions.length,
+      itemBuilder: (context, index) {
+        Transaction transaction = transactionProvider.transactions[index];
+        return TransactionItem(
+          image: transaction.image,
+          title: transaction.title,
+          day:
+              '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
+          income: transaction.income,
+          amount: transaction.amount,
+        );
+      },
     );
   }
 }
 
 class UpcomingBills extends StatelessWidget {
-  const UpcomingBills({super.key});
+  TransactionProvider transactionProvider;
+  UpcomingBills({super.key, required this.transactionProvider});
 
   @override
   Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      child: Column(
-        children: const [
-          BillItem(
-            image: "assets/images/up.png",
-            title: "Upwork",
-            day: "Today",
-          ),
-          BillItem(
-            image: "assets/images/person.png",
-            title: "Transfer",
-            day: "Yesterday",
-          ),
-          BillItem(
-            image: "assets/images/paypall.png",
-            title: "Paypall",
-            day: "Jan 30, 2022",
-          ),
-          BillItem(
-            image: "assets/images/youtube.png",
-            title: "Youtube",
-            day: "Jan 16, 2022",
-          ),
-          BillItem(
-            image: "assets/images/youtube.png",
-            title: "Youtube",
-            day: "Jan 16, 2022",
-          ),
-        ],
-      ),
+    return ListView.builder(
+      padding: const EdgeInsets.all(0),
+      itemCount: transactionProvider.bills.length,
+      itemBuilder: (context, index) {
+        Transaction transaction = transactionProvider.bills[index];
+        return BillItem(
+          image: transaction.image,
+          title: transaction.title,
+          day:
+              '${transaction.date.day}/${transaction.date.month}/${transaction.date.year}',
+          income: transaction.income,
+          amount: transaction.amount,
+        );
+      },
     );
-    ;
   }
 }

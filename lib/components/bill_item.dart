@@ -6,16 +6,22 @@ class BillItem extends StatelessWidget {
   final String image;
   final String title;
   final String day;
+  final bool income;
+  final double amount;
+
   const BillItem({
     super.key,
     required this.image,
     required this.title,
     required this.day,
+    required this.income,
+    required this.amount,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
+      height: 70,
       padding: const EdgeInsets.symmetric(vertical: 10),
       child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
