@@ -1,4 +1,8 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:green_ui/constants/constants.dart';
 import 'package:green_ui/providers/transaction_provider.dart';
 import 'package:green_ui/screens/add_expense_screen.dart';
@@ -15,7 +19,17 @@ import 'package:provider/provider.dart';
 
 import 'components/custom_navigation_bar.dart';
 
-void main() {
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  // await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  await FirebaseMessaging.instance.getInitialMessage();
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+
   runApp(
     ChangeNotifierProvider(
       create: (context) => TransactionProvider(),
@@ -81,6 +95,114 @@ class StartScreen extends StatefulWidget {
 
 class _StartScreenState extends State<StartScreen> {
   int currentIndex = 0;
+  String? mToken = '';
+  final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+      FlutterLocalNotificationsPlugin();
+
+  @override
+  void initState() {
+    super.initState();
+    print("hello");
+    requestPermission();
+    getToken();
+    initInfo();
+  }
+
+  void requestPermission() async {
+    FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+    NotificationSettings settings = await messaging.requestPermission(
+      alert: true,
+      announcement: false,
+      badge: true,
+      carPlay: false,
+      criticalAlert: false,
+      provisional: false,
+      sound: true,
+    );
+
+    if (settings.authorizationStatus == AuthorizationStatus.authorized) {
+      print('User granted permission');
+    } else if (settings.authorizationStatus ==
+        AuthorizationStatus.provisional) {
+      print('User granted provisional permission');
+    } else {
+      print('User declined or has not accepted permission');
+    }
+  }
+
+  initInfo() {
+    print("i'm inside init");
+    var androidInitialize =
+        const AndroidInitializationSettings('@mipmap/ic_launcher');
+    var iosInitialize = const IOSInitializationSettings();
+    var initializationsSettings =
+        InitializationSettings(android: androidInitialize, iOS: iosInitialize);
+
+    flutterLocalNotificationsPlugin.initialize(initializationsSettings,
+        onSelectNotification: (String? payload) async {
+      try {
+        if (payload != null && payload.isNotEmpty) {
+          // Navigator.pushNamed(context, '/expense');
+        } else {}
+      } catch (e) {}
+      return;
+    });
+
+    FirebaseMessaging.onMessage.listen(
+      (RemoteMessage message) async {
+        print("...........onMessage................");
+        print(
+            "onMessage: ${message.notification?.title}/${message.notification?.body}");
+
+        BigTextStyleInformation bigTextStyleInformation =
+            BigTextStyleInformation(
+          message.notification!.body.toString(),
+          htmlFormatBigText: true,
+          contentTitle: message.notification!.title.toString(),
+          htmlFormatContentTitle: true,
+        );
+
+        AndroidNotificationDetails androidPlatformChannelSpecifics =
+            AndroidNotificationDetails(
+          'dbfood',
+          'dbfood',
+          importance: Importance.high,
+          styleInformation: bigTextStyleInformation,
+          priority: Priority.high,
+          playSound: false,
+        );
+
+        NotificationDetails platformChannelSpecifics = NotificationDetails(
+            android: androidPlatformChannelSpecifics,
+            iOS: const IOSNotificationDetails());
+
+        await flutterLocalNotificationsPlugin.show(
+            0,
+            message.notification?.title,
+            message.notification?.body,
+            platformChannelSpecifics,
+            payload: message.data['body']);
+      },
+    );
+  }
+
+  void getToken() async {
+    await FirebaseMessaging.instance.getToken().then((token) {
+      setState(() {
+        mToken = token;
+        print("Token: $mToken");
+      });
+
+      saveToken(token!);
+    });
+  }
+
+  void saveToken(String token) async {
+    await FirebaseFirestore.instance.collection("UserTokens").doc("User1").set({
+      'token': token,
+    });
+  }
 
   @override
   Widget build(BuildContext context) {

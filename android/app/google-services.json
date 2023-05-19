@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "813415172499",
+    "firebase_url": "https://finance-flutter-app-ed66d-default-rtdb.firebaseio.com",
+    "project_id": "finance-flutter-app-ed66d",
+    "storage_bucket": "finance-flutter-app-ed66d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:813415172499:android:68c9f4120d860751eac066",
+        "android_client_info": {
+          "package_name": "com.example.green_ui"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "813415172499-k85csmqc02fujcop6snjhmmcqgnvgeif.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAofgPZpZvYw6nLX8zL-XtZyQGcaVnApww"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "813415172499-k85csmqc02fujcop6snjhmmcqgnvgeif.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "813415172499-rbsg9ul7bu2rn74mfibilotqloph1510.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.greenUi"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
