@@ -53,7 +53,7 @@ class TopBar extends StatelessWidget {
       final message = {
         'message': {
           'token':
-              'e4QtoiQxREiW7f_8M1Hcw5:APA91bE0OXTDoZZjb5pVf202R5-IVhWGnxUmBRWOrr0q2JJA-j5QRmMILj7f9em2246u-7gmDcf68dFyYGs8Jg3uqeZYiNMvoWhAwWPyBLyTbgYFky4iwM74mhRgXvvCtHNvzvOFZYc0',
+              'fjMN_FfMSfm3FDNG_8Mk-k:APA91bHl-6Z-n5sH4i8z7mXMSVOABvC77K52DQqafLyMAbWbwAWnPOl04XKMhFEquSqMh1OQSPzzWKIYhGhy9ThgIk7b-ZdzGmUfWH2i-kpY2KUmUdEnWIWEQN2bzmzz96uVxSZ3eliq',
           'notification': {
             'body': 'Message iin body heseg',
             'title': 'Message irlee',

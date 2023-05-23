@@ -151,7 +151,7 @@ class _BillDetailsScreenState extends State<BillDetailsScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 40),
+                          const SizedBox(height: 20),
                           SizedBox(
                             width: 400,
                             child: Column(

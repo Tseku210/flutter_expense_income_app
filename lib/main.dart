@@ -10,6 +10,7 @@ import 'package:green_ui/screens/bill_details_screen.dart';
 import 'package:green_ui/screens/connect_wallet_screen.dart';
 import 'package:green_ui/screens/graph_screen.dart';
 import 'package:green_ui/screens/home.dart';
+import 'package:green_ui/screens/onboarding_screen.dart';
 import 'package:green_ui/screens/payment_screen.dart';
 import 'package:green_ui/screens/payment_success_screen.dart';
 import 'package:green_ui/screens/profile_screen.dart';
@@ -71,6 +72,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/',
       routes: {
         '/': (context) => const SplashScreen(),
+        '/onboarding': (context) => const OnboardingScreen(),
         '/home': (context) => const StartScreen(),
         '/connect_wallet': (context) => const ConnectWalletScreen(),
         '/expense': (context) => const AddExpenseScreen(),
@@ -178,11 +180,12 @@ class _StartScreenState extends State<StartScreen> {
             iOS: const IOSNotificationDetails());
 
         await flutterLocalNotificationsPlugin.show(
-            0,
-            message.notification?.title,
-            message.notification?.body,
-            platformChannelSpecifics,
-            payload: message.data['body']);
+          0,
+          message.notification?.title,
+          message.notification?.body,
+          platformChannelSpecifics,
+          payload: message.data['body'],
+        );
       },
     );
   }

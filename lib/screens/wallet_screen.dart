@@ -62,7 +62,7 @@ class _WalletContentState extends State<WalletContent> {
 
     return Column(children: [
       SizedBox(
-          height: size.height * 0.9,
+          height: size.height * 0.93,
           child: Stack(
             children: [
               TopBar(size: size, isNotification: true, title: 'Wallet'),

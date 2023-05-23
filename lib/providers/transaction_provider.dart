@@ -131,6 +131,27 @@ class TransactionProvider with ChangeNotifier {
     }
   }
 
+  Future<void> deleteTransaction(String transactionId) async {
+    final url = Uri.https(
+      'finance-flutter-app-ed66d-default-rtdb.firebaseio.com',
+      '/transactions/$transactionId.json',
+    );
+    try {
+      final response = await http.delete(url);
+      if (response.statusCode == 200) {
+        _transactions
+            .removeWhere((transaction) => transaction.id == transactionId);
+        _bills.removeWhere((transaction) => transaction.id == transactionId);
+        balance = calculateTotalBalance();
+        expense = calculateTotalExpenses();
+        income = calculateTotalIncome();
+        notifyListeners();
+      }
+    } catch (error) {
+      rethrow;
+    }
+  }
+
   Future<List<Transaction>> fetchTransactionsToList() async {
     try {
       final response = await http.get(url);

@@ -293,12 +293,14 @@ class _PaymentSuccessScreenState extends State<PaymentSuccessScreen> {
                               ],
                             ),
                           ),
-                          const SizedBox(height: 50),
+                          const SizedBox(height: 30),
                           SizedBox(
                             width: 400,
                             child: OutlinedButton(
                               onPressed: () {
                                 // transactionProvider.clearBill();
+                                transactionProvider.deleteTransaction(
+                                    transactionProvider.selectedBillItem.id);
                                 Navigator.pushNamed(context, '/home');
                               },
                               style: TextButton.styleFrom(

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:green_ui/constants/constants.dart';
 import 'package:green_ui/screens/home.dart';
+import 'package:green_ui/screens/onboarding_screen.dart';
 
 class SplashScreen extends StatelessWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -8,7 +9,7 @@ class SplashScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Future.delayed(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, HomeScreen.routeName);
+      Navigator.pushReplacementNamed(context, OnboardingScreen.routeName);
     });
 
     return Scaffold(
